@@ -60,27 +60,42 @@ html,body{
   transform:scaleX(-1);
   transform-origin:bottom center;
 }
+
+/* Top garland: three overlapping copies at different sizes/depths
+   for a fuller, more alive-looking cluster of thorns up top. */
 .spike-top-left{
-  top:-20px;
-  left:-10px;
-  width:min(22vw, 280px);
-  opacity:0.85;
+  top:-22px;
+  left:-14px;
+  width:min(20vw, 260px);
+  opacity:0.88;
+  z-index:1;
   transform-origin:top center;
 }
 .spike-top-right{
-  top:-20px;
-  right:-10px;
-  width:min(22vw, 280px);
-  opacity:0.85;
+  top:-22px;
+  right:-14px;
+  width:min(20vw, 260px);
+  opacity:0.88;
+  z-index:1;
   transform:scaleX(-1);
+  transform-origin:top center;
+}
+.spike-top-center{
+  top:-46px;
+  left:50%;
+  width:min(15vw, 190px);
+  opacity:0.78;
+  z-index:0;
+  transform:translateX(-50%) rotate(178deg);
   transform-origin:top center;
 }
 
 @media (prefers-reduced-motion: no-preference){
-  .spike-left{ animation: sway 9s ease-in-out infinite; }
-  .spike-right{ animation: swayR 9s ease-in-out infinite; }
-  .spike-top-left,
-  .spike-top-right{ animation: swayTop 7s ease-in-out infinite; }
+  .spike-left{ animation: sway 9s ease-in-out infinite, spikeGlow 6s ease-in-out infinite; }
+  .spike-right{ animation: swayR 9s ease-in-out infinite, spikeGlow 6s ease-in-out infinite 0.6s; }
+  .spike-top-left{ animation: swayTop 6.5s ease-in-out infinite, spikeGlow 5s ease-in-out infinite; }
+  .spike-top-right{ animation: swayTopR 7.5s ease-in-out infinite, spikeGlow 5s ease-in-out infinite 1.4s; }
+  .spike-top-center{ animation: swayTopCenter 8.5s ease-in-out infinite, spikeGlow 5s ease-in-out infinite 2.4s; }
 }
 @keyframes sway{
   0%,100%{ transform: rotate(-1.2deg); }
@@ -91,37 +106,47 @@ html,body{
   50%{ transform: scaleX(-1) rotate(1.2deg); }
 }
 @keyframes swayTop{
-  0%,100%{ transform: rotate(1deg); }
-  50%{ transform: rotate(-1deg); }
+  0%,100%{ transform: rotate(2deg); }
+  50%{ transform: rotate(-2.4deg); }
 }
-.spike-top-right{ animation-name: swayTopR; }
 @keyframes swayTopR{
-  0%,100%{ transform: scaleX(-1) rotate(1deg); }
-  50%{ transform: scaleX(-1) rotate(-1deg); }
+  0%,100%{ transform: scaleX(-1) rotate(2deg); }
+  50%{ transform: scaleX(-1) rotate(-2.4deg); }
+}
+@keyframes swayTopCenter{
+  0%,100%{ transform: translateX(-50%) rotate(175deg); }
+  50%{ transform: translateX(-50%) rotate(184deg); }
+}
+/* Faint breathing red glow, like the thorns catch light with a heartbeat. */
+@keyframes spikeGlow{
+  0%,100%{ filter: drop-shadow(0 0 18px rgba(0,0,0,0.6)) drop-shadow(0 0 0 rgba(199,59,71,0)); }
+  50%{ filter: drop-shadow(0 0 18px rgba(0,0,0,0.6)) drop-shadow(0 0 16px rgba(199,59,71,0.55)); }
 }
 
-/* ---------- Grass strip at the bottom (image-based, swaying) ---------- */
+/* ---------- Grass at the bottom: a single swaying image ---------- */
 .grass-strip{
   position:fixed;
   left:0;
   right:0;
   bottom:0;
-  height:clamp(70px, 14vw, 130px);
+  height:clamp(90px, 18vw, 170px);
   z-index:1;
   pointer-events:none;
-  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  overflow:visible;
 }
-.grass-row{
-  position:absolute;
-  inset:-6px -20px -6px -20px;
-  background-image:url('../assets/images/grass.png');
-  background-repeat:repeat-x;
-  background-position:bottom left;
-  background-size:auto 100%;
+.grass-img{
+  width:min(1100px, 145vw);
+  max-width:none;
+  height:auto;
+  display:block;
   transform-origin:bottom center;
+  filter:drop-shadow(0 -6px 14px rgba(0,0,0,0.55));
 }
 @media (prefers-reduced-motion: no-preference){
-  .grass-row{ animation: grassSway 4s ease-in-out infinite; }
+  .grass-img{ animation: grassSway 4s ease-in-out infinite; }
 }
 @keyframes grassSway{
   0%,100%{ transform: skewX(-2deg); }
